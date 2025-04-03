@@ -14,8 +14,6 @@ RUN apt install -y ffmpeg
 
 WORKDIR /app/
 
-ENV OPENAI_API_KEY ""
-ENV PREFIX_ENABLED ""
 
 COPY package.json package-lock.json ./
 

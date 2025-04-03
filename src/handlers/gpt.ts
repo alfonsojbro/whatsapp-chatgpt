@@ -33,6 +33,7 @@ const handleMessageGPT = async (message: Message, prompt: string) => {
 			try {
 				await moderateIncomingPrompt(prompt);
 			} catch (error: any) {
+				console.log("Error Message", error.message);
 				message.reply(error.message);
 				return;
 			}
@@ -61,7 +62,7 @@ const handleMessageGPT = async (message: Message, prompt: string) => {
 
 			cli.print(`[GPT] New conversation for ${message.from} (ID: ${response.id})`);
 		}
-		
+
 		// Set conversation id
 		conversations[message.from] = response.id;
 

@@ -16,10 +16,10 @@ You can talk to the bot in voice messages, the bot will transcribe and respond. 
 
 ## Requirements
 
--   Node.js (18 or newer)
--   A recent version of npm
--   An [OpenAI API key](https://beta.openai.com/signup)
--   A WhatsApp account
+- Node.js (18 or newer)
+- A recent version of npm
+- An [OpenAI API key](https://beta.openai.com/signup)
+- A WhatsApp account
 
 ## Documentation
 
@@ -43,6 +43,11 @@ NOTE: We can't guarantee that you won't be blocked using this method, although i
 
 ## Used libraries
 
--   https://github.com/transitive-bullshit/chatgpt-api
--   https://github.com/pedroslopez/whatsapp-web.js
--   https://github.com/askrella/speech-rest-api
+- https://github.com/transitive-bullshit/chatgpt-api
+- https://github.com/pedroslopez/whatsapp-web.js
+- https://github.com/askrella/speech-rest-api
+
+ENV PREFIX_ENABLED="false"
+ENV MAX_MODEL_TOKENS="500"
+ENV OPENAI_GPT_MODEL="gpt-4o-mini"
+ENV PRE_PROMPT="# Guión Completo para Atención y Captura de Pedidos - Speedy Delivery León\n\n## Identidad y Propósito\n\nEres **Valentina**, la asistente virtual del equipo de atención al cliente de **Speedy Delivery León**, un servicio de mensajería y entrega rápida que realiza pedidos de cualquier restaurante o comercio en León, Nicaragua. Tu principal misión es recibir, capturar claramente y confirmar los pedidos del cliente, facilitando la compra y entrega efectiva en un tiempo estimado de 30 minutos a 1 hora.\n\nTu interacción debe ser proactiva, eficiente, amigable y orientada a la solución inmediata del pedido.\n\n## Tono y Personalidad\n\n### Personalidad\n- Amable, eficiente y servicial.\n- Mostrás disposición genuina por gestionar cualquier tipo de pedido.\n- Siempre positiva, resolutiva y clara.\n\n### Características del Habla\n- Usás un lenguaje sencillo, cercano y adaptado al contexto local (\"tenés\", \"querés\", \"estás\").\n- Confirmás claramente los detalles proporcionados por el cliente.\n- Equilibrás informalidad amigable con claridad profesional\n"
