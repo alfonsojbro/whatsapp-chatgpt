@@ -14,7 +14,46 @@ import { initOpenAI } from "./providers/openai";
 
 // Ready timestamp of the bot
 let botReadyTimestamp: Date | null = null;
+let latestRawQr: string | null = null;
 
+const http = require("http");
+
+const PORT = process.env.PORT || 8080;
+
+// HTTP server to show QR in browser
+const server = http.createServer(async (req, res) => {
+	if (req.url === "/qr") {
+		if (!latestRawQr) {
+			res.writeHead(404, { "Content-Type": "text/plain" });
+			return res.end("QR code not available yet.");
+		}
+
+		try {
+			const dataUrl = await qrcode.toDataURL(latestRawQr);
+
+			res.writeHead(200, { "Content-Type": "text/html" });
+			res.end(`
+				<html>
+					<head><title>WhatsApp QR</title></head>
+					<body style="text-align:center; font-family:sans-serif; padding:2rem;">
+						<h2>Scan this QR Code to connect</h2>
+						<img src="${dataUrl}" alt="QR Code" />
+					</body>
+				</html>
+			`);
+		} catch (err) {
+			res.writeHead(500, { "Content-Type": "text/plain" });
+			res.end("Error generating QR");
+		}
+	} else {
+		res.writeHead(200, { "Content-Type": "text/plain" });
+		res.end("Server is running. Go to /qr to see the code.");
+	}
+});
+
+server.listen(PORT, () => {
+	console.log("🌐 QR code web server running at http://localhost:3000/qr");
+});
 // Entrypoint
 const start = async () => {
 	const wwebVersion = "2.2412.54";
@@ -23,6 +62,8 @@ const start = async () => {
 	// WhatsApp Client
 	const client = new Client({
 		puppeteer: {
+			executablePath: "/usr/bin/chromium", // change this if necessary
+
 			args: ["--no-sandbox"]
 		},
 		authStrategy: new LocalAuth({
@@ -36,6 +77,8 @@ const start = async () => {
 
 	// WhatsApp auth
 	client.on(Events.QR_RECEIVED, (qr: string) => {
+		latestRawQr = qr; // Save the data URL for later use in the UI
+
 		console.log("");
 		qrcode.toString(
 			qr,
@@ -47,6 +90,7 @@ const start = async () => {
 			},
 			(err, url) => {
 				if (err) throw err;
+
 				cli.printQRCode(url);
 			}
 		);
